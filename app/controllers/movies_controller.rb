@@ -1,5 +1,11 @@
 class MoviesController < ApplicationController
-
+  config.encoding = "UTF-8"
+  def self.selected
+    @@selected
+  end
+  def self.selected=(field)
+    @@selected = field
+  end
   def movie_params
     params.require(:movie).permit(:title, :rating, :description, :release_date)
   end
@@ -10,10 +16,23 @@ class MoviesController < ApplicationController
     # will render app/views/movies/show.<extension> by default
   end
 
+  #def index
+  #  @movies = Movie.all  #original code
+  #end
+  
   def index
-    @movies = Movie.all
+    #debugger
+    if params["order"] == "title"
+      session["order"] = "title"
+      @movies = Movie.order(:title).all
+    elsif params["order"] == "release_date"
+      session["order"] = "release_date"
+      @movies = Movie.order(:release_date).all
+    else
+      @movies = Movie.all
+    end
   end
-
+    
   def new
     # default: render 'new' template
   end
