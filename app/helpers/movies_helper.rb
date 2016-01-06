@@ -3,7 +3,4 @@ module MoviesHelper
   def oddness(count)
     count.odd? ?  "odd" :  "even"
   end
-  def show
-    @all_ratings = Movie.all_ratings
-  end
 end
