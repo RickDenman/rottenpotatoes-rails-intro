@@ -4,10 +4,10 @@
 = form_tag movies_path, :method => :get, :id => 'ratings_form' do
   Include:
   - #debugger
-  - MoviesController.all_ratings.each do |rating|
+  - @all_ratings.each do |rating|
     = rating
-    = check_box_tag "ratings[#{rating}]", autocomplete = "true", checked = MoviesController.filt ? MoviesController.filt.include?(rating) : "true", :id =>'ratings_#{rating}'
-  = submit_tag 'Refresh', :id => 'ratings_submit'
+    = check_box_tag "ratings[#{rating}]", autocomplete = "true", checked = @filtr? @filtr.include?(rating) : "checked", :id =>'ratings_#{rating}'
+  = submit_tag "Refresh", :id => "ratings_submit"
   
 %table#movies
   %thead

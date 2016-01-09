@@ -1,22 +1,17 @@
 class MoviesController < ApplicationController
-  @@all_ratings = Movie.all_ratings
-  @@filt = Movie.all_ratings
-  def self.all_ratings
-    @@all_ratings
-  end
-  def self.filt
-    @@filt
-  end
-  def self.filt= (rankArr)
-    @@filt = rankArr
+  attr_reader :all_ratings
+  attr_accessor :filt
+  def initialize
+    #debugger
+    super
+    @all_ratings = Movie.all_ratings
+    @filtr = @all_ratings
   end
   
   def movie_params
-    #debugger
     params.require(:movie).permit(:title, :rating, :description, :release_date)
   end
 
-  
   def show
     id = params[:id] # retrieve movie ID from URI route
     @movie = Movie.find(id) # look up movie by unique ID
@@ -28,22 +23,21 @@ class MoviesController < ApplicationController
   #end
   
   def index
-    #debugger
     if params["order"] != nil
       session["order"] = params["order"]
     end
     if params[:ratings] != nil 
-      @@filt = params[:ratings].keys
-      session["filt"] = @@filt
+      @filtr = params[:ratings].keys
+      session["filtr"] = @filtr
     else
-      @@filt = session["filt"]
+      @filtr = session["filtr"]
     end
     if session["order"] == "title"
-      @movies = Movie.order(:title).where(rating: @@filt)
+      @movies = Movie.order(:title).where(rating: @filtr)
     elsif session["order"] == "release_date"
-      @movies = Movie.order(:release_date).where(rating: @@filt)
+      @movies = Movie.order(:release_date).where(rating: @filtr)
     else
-      @movies = Movie.where(rating: @@filt)
+      @movies = Movie.where(rating: @filtr)
     end
   end
     
