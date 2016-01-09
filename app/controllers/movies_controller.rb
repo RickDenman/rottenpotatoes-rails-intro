@@ -1,13 +1,7 @@
 class MoviesController < ApplicationController
-  attr_reader :all_ratings
+  attr_accessor :all_ratings
   attr_accessor :filt
-  def initialize
-    #debugger
-    super
-    @all_ratings = Movie.all_ratings
-    @filtr = @all_ratings
-  end
-  
+ 
   def movie_params
     params.require(:movie).permit(:title, :rating, :description, :release_date)
   end
@@ -23,13 +17,18 @@ class MoviesController < ApplicationController
   #end
   
   def index
+    #debugger
+    @all_ratings = Movie.all_ratings
+    if @filtr == nil
+      @filtr = Movie.all_ratings
+    end
     if params["order"] != nil
       session["order"] = params["order"]
     end
     if params[:ratings] != nil 
       @filtr = params[:ratings].keys
       session["filtr"] = @filtr
-    else
+    elsif session["filtr"] != nil
       @filtr = session["filtr"]
     end
     if session["order"] == "title"
