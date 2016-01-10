@@ -34,11 +34,10 @@ class MoviesController < ApplicationController
     elsif session["ratings"] != nil
       @filtr = session["ratings"].keys
       redirect_to movies_path(:ratings => session["ratings"])
-      return
     end
-    if params["order"] == "title"
+    if session["order"] == "title"
       @movies = Movie.order(:title).where(rating: @filtr)
-    elsif params["order"] == "release_date"
+    elsif session["order"] == "release_date"
       @movies = Movie.order(:release_date).where(rating: @filtr)
     else
       @movies = Movie.where(rating: @filtr)
