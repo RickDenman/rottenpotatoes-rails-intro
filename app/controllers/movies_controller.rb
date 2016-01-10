@@ -24,6 +24,35 @@ class MoviesController < ApplicationController
     end
     if params["order"] != nil
       session["order"] = params["order"]
+    #elsif session["order"] != nil
+     # redirect_to movies_path("order" => session["order"])
+      #return
+    end
+    if params[:ratings] != nil 
+      @filtr = params[:ratings].keys
+      session["ratings"] = params[:ratings]
+    elsif session["ratings"] != nil
+      @filtr = session["ratings"].keys
+      redirect_to movies_path(:ratings => session["ratings"])
+      return
+    end
+    if params["order"] == "title"
+      @movies = Movie.order(:title).where(rating: @filtr)
+    elsif params["order"] == "release_date"
+      @movies = Movie.order(:release_date).where(rating: @filtr)
+    else
+      @movies = Movie.where(rating: @filtr)
+    end
+  end
+  
+  def indexOld
+    #debugger
+    @all_ratings = Movie.all_ratings
+    if @filtr == nil
+      @filtr = Movie.all_ratings
+    end
+    if params["order"] != nil
+      session["order"] = params["order"]
     end
     if params[:ratings] != nil 
       @filtr = params[:ratings].keys

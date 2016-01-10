@@ -6,7 +6,7 @@
   - #debugger
   - @all_ratings.each do |rating|
     = rating
-    = check_box_tag "ratings[#{rating}]", autocomplete = "true", checked = @filtr? @filtr.include?(rating) : true, :id =>"ratings_#{rating}"
+    = check_box_tag "ratings[#{rating}]", autocomplete = "true", checked = @filtr.include?(rating), :id =>"ratings_#{rating}"
   = submit_tag "Refresh", :id => 'ratings_submit'
   
 %table#movies
